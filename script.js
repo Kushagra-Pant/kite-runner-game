@@ -212,7 +212,7 @@ function restart(){
   kite.visible = true;
 
   enemyKite.x = 500;
-  enemyKite.y = 700;
+  enemyKite.y = 200;
   enemyKite.visible = true;
 
   windspeed = { x: -1, y: -1 };
