@@ -3,7 +3,7 @@ const ctx = canvas.getContext('2d');
 
 const kite = {
   x: 150,
-  y: 100,
+  y: 300,
   width: 40,
   height: 40,
   color: 'blue',
@@ -12,8 +12,8 @@ const kite = {
 };
 
 const enemyKite = {
-  x: 400,
-  y: 300,
+  x: 500,
+  y: 200,
   width: 40,
   height: 40,
   color: 'red',
@@ -58,6 +58,12 @@ function update() {
   if (keys.up) kite.y -= kite.speed;
   if (keys.down) kite.y += kite.speed;
 
+  if (kite.x <= 0 || kite.x + kite.width >= canvas.width || kite.y + kite.height >= canvas.height) {
+    kite.visible = false;
+    endGame();
+    return;
+  }
+  
   kite.x = Math.max(0, Math.min(canvas.width - kite.width, kite.x));
   kite.y = Math.max(0, Math.min(canvas.height - kite.height, kite.y));
 
@@ -195,6 +201,30 @@ function gameLoop() {
   drawKite(kite);
   drawKite(enemyKite);
   requestAnimationFrame(gameLoop);
+
 }
 
 gameLoop();
+
+function restart(){
+  kite.x = 150;
+  kite.y = 100;
+  kite.visible = true;
+
+  enemyKite.x = 500;
+  enemyKite.y = 700;
+  enemyKite.visible = true;
+
+  windspeed = { x: -1, y: -1 };
+
+  gameOver = false;
+  respawning = false;
+
+  document.getElementById("points").innerHTML = "";
+  document.getElementById("points").style.color = "black";
+  document.getElementById("score").innerHTML = "Score: 0 (" + bestScore + ")";
+}
+
+function manual(){
+  window.location.href = "manual.html";
+}
