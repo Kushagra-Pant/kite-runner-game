@@ -128,8 +128,8 @@ function calcPoints(x, y){
   l[1] = parseInt(l[1].split(")")[0])
   console.log(l)
   if (l[0] > l[1]) {
-    localStorage.setItem("bestScore", l[1])
     l[1] = l[0]
+    localStorage.setItem("bestScore", l[1])
   }
   document.getElementById("score").innerHTML = "Score: " + l[0] + " (" + l[1] + ")"
   return points
