@@ -16,17 +16,19 @@
     #subtitle{
         text-align: center;
         width: 800px;
-        display: inline-block;
+        display: inline-flex;
     }
     #playerName{
-        width: 400px;
+        width: 33%;
         text-align: left;
-        display: inline;
     }
-    #score{
-        width: 400px;
-        text-align: right;
-        display: inline;
+    #pointsAdded{
+        width: 33%;
+        text-align: center;
+    }
+    #totalScore{
+        width: 33%;
+        text-align: center;
     }
     h2{
         margin: 0;
@@ -40,8 +42,11 @@
             <div id="playerName">
                 <h2>Player Name</h2>
             </div>
-            <div id="score">
-                <h2>Score</h2>
+            <div id="pointsAdded">
+                <h2 id="points"></h2>
+            </div>
+            <div id="totalScore">
+                <h2 id="score">Score: 0 (0)</h2>
             </div>
         </div>
     </div>
