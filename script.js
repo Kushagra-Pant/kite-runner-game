@@ -25,9 +25,14 @@ let windspeed = {
     x: -1,
     y: -1
 }
+
 let gameOver = false;
+let respawning = false;
 
 const keys = {};
+
+let bestScore = parseInt(localStorage.getItem("bestScore")) || 0;
+document.getElementById("score").innerHTML = "Score: 0 (" + bestScore + ")";
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft') keys.left = true;
@@ -58,9 +63,8 @@ function update() {
 
   enemyKite.x += enemyKite.speed + windspeed.x;
   enemyKite.y -= windspeed.y;
-  if (enemyKite.x <= 0 || enemyKite.x >= canvas.width - enemyKite.width) {
-    enemyKite.speed *= -1;
-  }
+  enemyKite.x = Math.max(0, Math.min(canvas.width - enemyKite.width, enemyKite.x));
+  enemyKite.y = Math.max(0, Math.min(canvas.height - enemyKite.height, enemyKite.y));
 
   checkCollision();
 }
@@ -103,6 +107,34 @@ function drawEnemyString() {
   ctx.stroke();
 }
 
+function spawnEnemyKite() {
+  enemyKite.x = canvas.width;
+  enemyKite.y = 200 + Math.random() * 100;
+  enemyKite.visible = true;
+  respawning = false;
+}
+
+function calcPoints(x, y){
+  points = 100 * Math.sqrt(x / 800) * Math.sqrt((600 - y) / 600)
+  document.getElementById("points").innerHTML = "+" + Math.round(points)
+  l = document.getElementById("score").innerHTML.split("(")
+  l[0] = parseInt(l[0].split(": ")[1]) + Math.round(points) 
+  l[1] = parseInt(l[1].split(")")[0])
+  console.log(l)
+  if (l[0] > l[1]) {
+    localStorage.setItem("bestScore", l[1])
+    l[1] = l[0]
+  }
+  document.getElementById("score").innerHTML = "Score: " + l[0] + " (" + l[1] + ")"
+  return points
+}
+
+function endGame(){
+  gameOver = true;
+  document.getElementById("points").innerHTML = "Game Over!"
+  document.getElementById("points").style.color = "red"
+}
+
 function checkCollision() {
   const myStringStart = { x: 100, y: canvas.height };
   const myStringEnd = { x: kite.x + kite.width / 2, y: kite.y + kite.height };
@@ -110,18 +142,23 @@ function checkCollision() {
   const enemyStringStart = { x: canvas.width - 100, y: canvas.height };
   const enemyStringEnd = { x: enemyKite.x + enemyKite.width / 2, y: enemyKite.y + enemyKite.height };
 
-  // If kite touches enemy's string
-  if (lineIntersectsRect(enemyStringStart, enemyStringEnd, kite)) {
+  // If player kite touches enemy's string
+  if (enemyKite.visible && lineIntersectsRect(enemyStringStart, enemyStringEnd, kite)) {
     console.log("Enemy kite cut at:", kite.x + kite.width / 2, kite.y + kite.height);
+    console.log("Points:", calcPoints(kite.x + kite.width / 2, kite.y + kite.height));
     enemyKite.visible = false;
+    if (!respawning && !gameOver) {
+      respawning = true;
+      setTimeout(spawnEnemyKite, 3000); // spawn new one in 3s
+    }
   }
 
-  // If enemy kite touches your string
-  if (lineIntersectsRect(myStringStart, myStringEnd, enemyKite)) {
+  // If enemy kite touches player string
+  if (kite.visible && enemyKite.visible && lineIntersectsRect(myStringStart, myStringEnd, enemyKite)) {
     console.log("Both kites cut at:", enemyKite.x + enemyKite.width / 2, enemyKite.y + enemyKite.height);
     kite.visible = false;
     enemyKite.visible = false;
-    gameOver = true;
+    endGame();
   }
 }
 
