@@ -1,14 +1,18 @@
-playerInfo = localStorage.getItem("playerShopInfo") || "TFFFFF;FFF"  
+if(!localStorage.getItem("playerShopInfo")){
+    localStorage.setItem("playerShopInfo", "TFFFFFFF;TFFF")
+}
+playerInfo = localStorage.getItem("playerShopInfo")
 
-colors = ["blue", "red", "green", "yellow", "orange", "pink"]
-speeds = [2, 3, 4]
+colors = ["blue", "red", "green", "yellow", "orange", "pink", "white", "black"]
+speeds = [1, 2, 3, 4]
 
 colorDiv = document.getElementById("colors")
-for(i in colors){
+for(let i in colors){
     item = document.createElement("item") 
     img = document.createElement("img")
     img.src = "shop-images/kite-" + colors[i] + ".png"
-    item.textContent = colors[i].charAt(0).toUpperCase() + colors[i].slice(1).toLowerCase()
+    img.style.width = "6vw"
+    item.textContent = colors[i].charAt(0).toUpperCase() + colors[i].slice(1)
     item.appendChild(document.createElement("br"))
     item.appendChild(document.createElement("br"))
     item.appendChild(img)
@@ -16,7 +20,9 @@ for(i in colors){
     item.appendChild(document.createElement("br"))
     item.appendChild(document.createElement("br"))
     button = document.createElement("button")
-    
+    button.id = "color;" + colors[i]
+    item.id = "item;" + button.id
+
     text = document.createElement("span")
 
     if(playerInfo.split(";")[0].charAt(i) == "F"){
@@ -24,7 +30,7 @@ for(i in colors){
         coinimg.src = "coin.png"
         coinimg.classList = "coin"
     
-        text.textContent = " 200"
+        text.textContent = " " + 200 * Math.round(0.5 + 0.17 * i) 
         text.style.fontSize = "18px"
     
         priceContainer = document.createElement("span")
@@ -39,19 +45,24 @@ for(i in colors){
         button.addEventListener('click', function() {
             purchaseItem('color;' + colors[i]);
         });
-    } else {
+    } else if(localStorage.getItem("kiteColor") != colors[i]) {
         text.textContent = "Select"
-        button.classList = "bought"
         button.appendChild(text)
         item.appendChild(button)
+    } else {
+        text.textContent = "Selected"
+        button.appendChild(text)
+        item.appendChild(button)
+        item.classList.add("selected")
     }
 }
 
 speedDiv = document.getElementById("speeds")
-for(i in speeds){
+for(let i in speeds){
     item = document.createElement("item") 
     img = document.createElement("img")
     img.src = "shop-images/speed-" + speeds[i] + ".png"
+    img.style.width = "6vw"
     item.textContent = "x" + speeds[i] + " Speed"
     item.appendChild(document.createElement("br"))
     item.appendChild(document.createElement("br"))
@@ -60,6 +71,8 @@ for(i in speeds){
     item.appendChild(document.createElement("br"))
     item.appendChild(document.createElement("br"))
     button = document.createElement("button")
+    button.id = "speed;" + speeds[i]
+    item.id = "item;" + button.id
     
     text = document.createElement("span")
 
@@ -83,23 +96,68 @@ for(i in speeds){
         button.addEventListener('click', function() {
             purchaseItem('speed;' + speeds[i]);
         });
-    } else {
+    } else if(parseInt(localStorage.getItem("kiteSpeed")) != speeds[i]) {
         text.textContent = "Select"
-        button.classList = "bought"
         button.appendChild(text)
         item.appendChild(button)
+    } else {
+        text.textContent = "Selected"
+        button.appendChild(text)
+        item.appendChild(button)
+        item.classList.add("selected")
     }
 }
 
+function removeAllEventListeners(button) {
+    const newButton = button.cloneNode(true); 
+    button.parentNode.replaceChild(newButton, button);
+    return newButton; 
+}
+
 function purchaseItem(item) {
+    console.log(item)
+    button = document.getElementById(item)
+    button.className = ""
+    button.innerHTML = "Select"
+    button = removeAllEventListeners(button)
+    button.addEventListener('click', function() {
+        selectItem(item)
+    })
     switch(item.split(";")[0]){
         case "color":
-            color = item.split(";")[1]
-            
+            localStorage.getItem("playerShopInfo").split(";")[0].charAt(colors.indexOf(item.split(";")[1])) = "T"
             break
         case "speed":
-            speed = item.split(";")[1]
-
+            localStorage.getItem("playerShopInfo").split(";")[1].charAt(speeds.indexOf(item.split(";")[1])) = "T"
             break
     }
+}
+
+function selectItem(item){
+    console.log("selected")
+    console.log(item)
+    switch(item.split(";")[0]){
+        case 'color':
+            currentlySelected = document.getElementsByClassName("selected")[0]
+            break
+        case 'speed':
+            currentlySelected = document.getElementsByClassName("selected")[1]
+            break
+    }
+    currentlySelected.className = ""
+    buttonSelected = document.getElementById(currentlySelected.id.split(";")[1] + ";" + currentlySelected.id.split(";")[2])
+    buttonSelected.innerHTML = "Select"
+    buttonSelected = removeAllEventListeners(buttonSelected)
+    let id = buttonSelected.id;
+    buttonSelected.addEventListener('click', function() {
+        selectItem(id)
+    })
+    
+    button = document.getElementById(item)
+    button.className = ""
+    button.innerHTML = "Selected"
+    button = removeAllEventListeners(button)
+    document.getElementById("item;" + item).className = "selected"
+
+    localStorage.setItem("kite" + item.split(";")[0].charAt(0).toUpperCase() + item.split(";")[0].slice(1), item.split(";")[1])
 }

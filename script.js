@@ -1,13 +1,21 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
+if(!localStorage.getItem("kiteColor")){
+  localStorage.setItem("kiteColor", "blue")
+}
+
+if(!localStorage.getItem("kiteSpeed")){
+  localStorage.setItem("kiteSpeed", 1)
+}
+
 const kite = {
   x: 150,
   y: 300,
   width: 40,
   height: 40,
-  color: localStorage.getItem("kiteColor") || 'blue',
-  speed: localStorage.getItem("Speed") || 3,
+  color: localStorage.getItem("kiteColor"),
+  speed: parseInt(localStorage.getItem("kiteSpeed")) * 3,
   visible: true
 };
 
