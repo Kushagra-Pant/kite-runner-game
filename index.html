@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Amir's Kite Fighing Tournament</title>
+  <link rel="icon" href="favicon.png">
   <style>
     canvas {
       background: skyblue;
@@ -18,23 +19,25 @@
         width: 800px;
         display: inline-flex;
     }
-    #playerName{
+    #totalCoins{
         width: 33%;
         text-align: left;
     }
     #pointsAdded{
         width: 33%;
         text-align: center;
+        padding: 10px;
     }
     #totalScore{
         width: 33%;
         text-align: center;
+        padding: 10px;
     }
     h2{
         margin: 0;
     }
     button{
-        width: 33%;
+        width: 30%;
         border-radius: 15px;
         margin: 10px;
         font-size: 20px;
@@ -43,13 +46,32 @@
         border-width: 2px;
         font-weight: 700;
     }
+    #settings{
+        width: 10%;
+        font-size: 30px;
+        padding-block: 5px;
+    }
+    #coins{
+        border-radius: 5px;
+        border: 2px black solid;
+        background-color: gold;
+        margin: 5px;
+        padding: 5px;
+        display: inline-flex;
+    }
+    #coinText{
+        padding-inline: 10px;
+    }
   </style>
 </head>
 <body>
     <h1>Amir's Kite Fighting Tournament</h1>
     <div class="subtitle">
-        <div id="playerName">
-            <h2>Player Name</h2>
+        <div id="totalCoins">
+            <div id="coins">
+                <img src="coin.png" width="30"> 
+                <h2 id="coinText">Coins: 0</h2>
+            </div>
         </div>
         <div id="pointsAdded">
             <h2 id="points"></h2>
@@ -60,14 +82,17 @@
     </div>
     <canvas id="gameCanvas" width="800" height="600"></canvas>
     <div class="subtitle">
-        <button style="background-color: #2197ff">
+        <button onclick="redirect('shop')" style="background-color: #2197ff">
             🛒 Shop
         </button>
         <button onclick="restart()" style="background-color: #09aa64">
             🔄 Restart
         </button>
-        <button onclick="manual()" style="background-color: #de2c35">
+        <button onclick="redirect('manual')" style="background-color: #de2c35">
             📜 How to Play
+        </button>
+        <button id="settings" onclick="redirect('settings')" style="background-color: gray">
+            ⚙️
         </button>
     </div>
     <script src="script.js"></script>
