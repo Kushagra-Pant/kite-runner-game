@@ -49,6 +49,9 @@ for(let i in colors){
         text.textContent = "Select"
         button.appendChild(text)
         item.appendChild(button)
+        button.addEventListener('click', function() {
+            selectItem('color;' + colors[i]);
+        });
     } else {
         text.textContent = "Selected"
         button.appendChild(text)
@@ -100,6 +103,9 @@ for(let i in speeds){
         text.textContent = "Select"
         button.appendChild(text)
         item.appendChild(button)
+        button.addEventListener('click', function() {
+            selectItem('speed;' + speeds[i]);
+        });
     } else {
         text.textContent = "Selected"
         button.appendChild(text)
@@ -123,14 +129,23 @@ function purchaseItem(item) {
     button.addEventListener('click', function() {
         selectItem(item)
     })
+    let info = localStorage.getItem("playerShopInfo").split(";");
     switch(item.split(";")[0]){
         case "color":
-            localStorage.getItem("playerShopInfo").split(";")[0].charAt(colors.indexOf(item.split(";")[1])) = "T"
+            targetStr = info[0]; 
+            indexToChange = colors.indexOf(item.split(";")[1]);
+            targetStr = targetStr.substring(0, indexToChange) + "T" + targetStr.substring(indexToChange + 1);
+            info[0] = targetStr;
             break
         case "speed":
-            localStorage.getItem("playerShopInfo").split(";")[1].charAt(speeds.indexOf(item.split(";")[1])) = "T"
+            targetStr = info[1]; 
+            indexToChange = speeds.indexOf(item.split(";")[1]);
+            targetStr = targetStr.substring(0, indexToChange) + "T" + targetStr.substring(indexToChange + 1);
+            info[1] = targetStr;
             break
     }
+    console.log(info)
+    localStorage.setItem("playerShopInfo", info.join(";"));
 }
 
 function selectItem(item){
