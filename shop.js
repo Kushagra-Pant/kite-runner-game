@@ -130,7 +130,7 @@ function purchaseItem(item) {
     console.log((document.getElementById(item + ";cost").innerHTML))
     let cost = parseInt(document.getElementById(item + ";cost").innerHTML)
     if(parseInt(localStorage.getItem("coins")) < cost){
-        alert("Not enough coins!")
+        swal("Not enough coins!", "You are " + (cost - parseInt(localStorage.getItem("coins"))) + " coins short!")
         return
     }
     button.className = ""
