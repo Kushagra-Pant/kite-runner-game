@@ -50,6 +50,11 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowRight') keys.right = true;
   if (e.key === 'ArrowUp') keys.up = true;
   if (e.key === 'ArrowDown') keys.down = true;
+  
+  if (e.key === 'a') keys.left = true;
+  if (e.key === 'd') keys.right = true;
+  if (e.key === 'w') keys.up = true;
+  if (e.key === 's') keys.down = true;
 });
 
 document.addEventListener('keyup', (e) => {
@@ -57,6 +62,11 @@ document.addEventListener('keyup', (e) => {
   if (e.key === 'ArrowRight') keys.right = false;
   if (e.key === 'ArrowUp') keys.up = false;
   if (e.key === 'ArrowDown') keys.down = false;
+  
+  if (e.key === 'a') keys.left = false;
+  if (e.key === 'd') keys.right = false;
+  if (e.key === 'w') keys.up = false;
+  if (e.key === 's') keys.down = false;
 });
 
 function update() {

@@ -43,7 +43,7 @@
             span{
                 margin: 5px;
             }
-            #colors, #speeds{
+            #colors, #speeds, nav{
                 display: inline-flex;
             }
             .selected{
@@ -51,12 +51,40 @@
                 color: black;
                 font-weight: bolder;
             }
+            #coinsContainer{
+                display: flex;
+                align-items: center;
+            }
+            #coins{
+                border-radius: 15px;
+                border: 2px black solid;
+                background-color: goldenrod;
+                margin: 5px;
+                margin-inline: 45px;
+                padding-inline: 15px;
+                padding-block: 5px;
+                display: inline-flex;
+                align-items: center;
+            }
+            #coinText{
+                padding-inline: 10px;
+                margin-block: 5px;
+                font-family: 'Times New Roman', Times, serif;
+            }
         </style>
     </head>
     <body>
-        <a href="index.html">
-            <button>⮪ Return to Game</button>
-        </a>
+        <nav>
+            <a href="index.html">
+                <button>⮪ Return to Game</button>
+            </a>
+            <div id="coinsContainer">
+                <div id="coins">
+                    <img src="coin.png" width="30" height="30">
+                    <h2 id="coinText"></h2>
+                </div>
+            </div>
+        </nav>
         <h1>Saifo's Kite Bazaar</h1>
         <p>Welcome to Saifo's Kite Bazaar! Purchase different colors of kites or upgrade them to win the kite tournament!</p>
         <h3>Kite Colors</h3>

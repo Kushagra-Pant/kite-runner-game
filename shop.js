@@ -6,6 +6,8 @@ playerInfo = localStorage.getItem("playerShopInfo")
 colors = ["blue", "red", "green", "yellow", "orange", "pink", "white", "black"]
 speeds = [1, 2, 3, 4]
 
+document.getElementById("coinText").innerHTML = "Coins: " + localStorage.getItem("coins")
+
 colorDiv = document.getElementById("colors")
 for(let i in colors){
     item = document.createElement("item") 
@@ -32,6 +34,7 @@ for(let i in colors){
     
         text.textContent = " " + 200 * Math.round(0.5 + 0.17 * i) 
         text.style.fontSize = "18px"
+        text.id = button.id + ";cost"
     
         priceContainer = document.createElement("span")
         priceContainer.style.display = "inline-flex"
@@ -86,6 +89,7 @@ for(let i in speeds){
     
         text.textContent = " " + Math.round(0.5 * speeds[i] ** 2) * 100
         text.style.fontSize = "18px"
+        text.id = button.id + ";cost"
     
         priceContainer = document.createElement("span")
         priceContainer.style.display = "inline-flex"
@@ -123,6 +127,12 @@ function removeAllEventListeners(button) {
 function purchaseItem(item) {
     console.log(item)
     button = document.getElementById(item)
+    console.log((document.getElementById(item + ";cost").innerHTML))
+    let cost = parseInt(document.getElementById(item + ";cost").innerHTML)
+    if(parseInt(localStorage.getItem("coins")) < cost){
+        alert("Not enough coins!")
+        return
+    }
     button.className = ""
     button.innerHTML = "Select"
     button = removeAllEventListeners(button)
@@ -145,6 +155,8 @@ function purchaseItem(item) {
             break
     }
     console.log(info)
+    localStorage.setItem("coins", parseInt(localStorage.getItem("coins")) - cost)
+    document.getElementById("coinText").innerHTML = "Coins: " + localStorage.getItem("coins")
     localStorage.setItem("playerShopInfo", info.join(";"));
 }
 
