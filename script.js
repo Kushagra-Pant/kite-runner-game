@@ -6,8 +6,8 @@ const kite = {
   y: 300,
   width: 40,
   height: 40,
-  color: 'blue',
-  speed: 5,
+  color: localStorage.getItem("kiteColor") || 'blue',
+  speed: localStorage.getItem("Speed") || 3,
   visible: true
 };
 
@@ -33,6 +33,9 @@ const keys = {};
 
 let bestScore = parseInt(localStorage.getItem("bestScore")) || 0;
 document.getElementById("score").innerHTML = "Score: 0 (" + bestScore + ")";
+
+let coins = parseInt(localStorage.getItem("coins")) || 0;
+document.getElementById("coinText").innerHTML = "Coins: " + coins;
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft') keys.left = true;
@@ -123,22 +126,31 @@ function spawnEnemyKite() {
 function calcPoints(x, y){
   points = 100 * Math.sqrt(x / 800) * Math.sqrt((600 - y) / 600)
   document.getElementById("points").innerHTML = "+" + Math.round(points)
-  l = document.getElementById("score").innerHTML.split("(")
-  l[0] = parseInt(l[0].split(": ")[1]) + Math.round(points) 
-  l[1] = parseInt(l[1].split(")")[0])
-  console.log(l)
-  if (l[0] > l[1]) {
-    l[1] = l[0]
-    localStorage.setItem("bestScore", l[1])
+  p = getPoints() 
+  p.current += Math.round(points) 
+  if (p.current > p.best) {
+    p.best = p.current
+    localStorage.setItem("bestScore", p.best)
   }
-  document.getElementById("score").innerHTML = "Score: " + l[0] + " (" + l[1] + ")"
+  document.getElementById("score").innerHTML = "Score: " + p.current + " (" + p.best + ")"
   return points
+}
+
+function getPoints(){
+  l = document.getElementById("score").innerHTML.split("(")
+  l[0] = parseInt(l[0].split(": ")[1])
+  l[1] = parseInt(l[1].split(")")[0])
+  return {current: l[0], best: l[1]}
 }
 
 function endGame(){
   gameOver = true;
+  coinsAdded = getPoints().current
   document.getElementById("points").innerHTML = "Game Over!"
   document.getElementById("points").style.color = "red"
+  coins += coinsAdded
+  localStorage.setItem("coins", coins)
+  document.getElementById("coinText").innerHTML = "Coins: " + coins
 }
 
 function checkCollision() {
@@ -201,7 +213,6 @@ function gameLoop() {
   drawKite(kite);
   drawKite(enemyKite);
   requestAnimationFrame(gameLoop);
-
 }
 
 gameLoop();
@@ -225,6 +236,6 @@ function restart(){
   document.getElementById("score").innerHTML = "Score: 0 (" + bestScore + ")";
 }
 
-function manual(){
-  window.location.href = "manual.html";
+function redirect(location){
+  window.location.href = location + ".html";
 }

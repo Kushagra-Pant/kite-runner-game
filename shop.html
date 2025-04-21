@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Winky+Rough:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+        <title>Amir's Kite Fighing Tournament</title>
+        <link rel="icon" href="favicon.png">
+        <style>
+            html{
+                background-color: #058896;
+                color: white;
+                text-align: center;
+                font-family: "Winky Rough";
+            }
+
+            button{
+                border-radius: 15px;
+                margin: 10px;
+                font-size: 20px;
+                padding: 12px;
+                border-color: white;
+                background-color: #2197ff;
+                border-width: 2px;
+                font-weight: 700;
+                color: white;
+            }
+            item{
+                border-radius: 15px;
+                margin: 10px;
+                padding: 10px;
+                border: 2px solid white;
+                text-align: center;
+                display: inline-block;
+                font: 25px bolder;
+            }
+            img{
+                width: 6vw;
+            }
+            .coin{
+                width: 30px !important
+            }
+            .purchaseButton{
+                display: inline;
+                background-color: goldenrod;
+                padding: 6px;
+            }
+            span{
+                margin: 5px;
+            }
+            #colors, #speeds{
+                display: inline-flex;
+            }
+        </style>
+    </head>
+    <body>
+        <a href="main.html">
+            <button>⮪ Return to Game</button>
+        </a>
+        <h1>Saifo's Kite Bazaar</h1>
+        <p>Welcome to Saifo's Kite Bazaar! Purchase different colors of kites or upgrade them to win the kite tournament!</p>
+        <h3>Kite Colors</h3>
+        <span id="colors">
+        </span>
+        <br>
+        <h3>Kite Speeds</h3>
+        <span id="speeds">
+        </span>
+        <script src="shop.js"></script>
+    </body>
+</html>
